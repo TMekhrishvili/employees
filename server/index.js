@@ -24,7 +24,8 @@ db.serialize(() => {
     stmt.finalize();
 })
 var str = ""
-db.each("SELECT id, Firstname FROM users", function (err, row) {
+
+db.each("SELECT id, Firstname FROM users", (err, row) => {
     str += (row.id + ". " + row.Firstname + " " + row.Lastname + ". ")
 })
 
