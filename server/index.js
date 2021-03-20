@@ -1,36 +1,13 @@
 const express = require('express')
-const app = express()
 const sqlite3 = require('sqlite3').verbose()
+const app = express()
 
-const db = new sqlite3.Database('Users')
+const db = new sqlite3.Database('employee')
 
-
-let arr = [
-    [1, "Temur", "Chkadua"],
-    [2, "Vakhtang", "Kvaratskhelia"],
-    [3, "Bakur", "Buchukuri"],
-    [4, "Malkhaz", "Ashordia"],
-    [5, "Nestan", "Kekelia"],
-];
-
-db.serialize(() => {
-    db.run("CREATE TABLE users (id INT, Firstname TEXT, Lastname TEXT)")
-    var stmt = db.prepare("INSERT INTO user VALUES (?,?,?)");
-    for (var i = 0; i < arr.length; i++) {
-        stmt.run(arr[i], error => {
-            if (error) throw error
-        })
-    }
-    stmt.finalize();
-})
-var str = ""
-
-db.each("SELECT id, Firstname FROM users", (err, row) => {
-    str += (row.id + ". " + row.Firstname + " " + row.Lastname + ". ")
-})
+db.run('CREATE TABLE IF NOT EXISTS emp(id INT, Firstname TEXT, Lastname TEXT)')
 
 app.get('/', (req, res) => {
-    res.send(str)
+    res.send("<h3> Hi there, You are going to perform CRUD operations.............[CREATE] Please enter 'http://localhost:3000/add/(id number)/(name)' to add new employee to the database.........................[READ] 'http://localhost:3000/view/(id number)' to view an employee.........................[UPDATE] 'http://localhost:3000/update/(id number)/(new name)' to update an employee.....................[DELETE] 'http://localhost:3000/del/(id number)' to delete an employee...............................Before closing this window, kindly enter 'http://localhost:3000/close' to close the database connection <h3>")
 })
 
 app.listen(3001, () => {
