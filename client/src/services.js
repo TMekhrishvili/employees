@@ -27,3 +27,19 @@ export const userSet = data => {
             })
     })
 }
+
+
+export const userDelete = id => {
+    const url = `del/${id}`
+    return new Promise((resolve, reject) => {
+        axios.get(url)
+            .then(response => {
+                console.log(response)
+                resolve(response)
+            })
+            .catch(error => {
+                console.error(error)
+                reject(error)
+            })
+    })
+}
