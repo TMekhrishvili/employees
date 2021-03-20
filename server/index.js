@@ -6,18 +6,21 @@ const app = express()
 
 const db = new sqlite3.Database('employee')
 
-db.run('CREATE TABLE IF NOT EXISTS emp(id INT, Firstname TEXT, Lastname TEXT)')
+db.run('CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT, Firstname TEXT, Lastname TEXT)')
 app.use(cors())
 
+//GET LIST
 app.get('/', (req, res) => {
-    res.send("server response")
+    db.all("SELECT * FROM users", (err, rows) => {
+        res.send(rows)
+    });
 })
 
 // CREATE
-app.get('/add/:id/:firstname/:lastname', (req, res) => {
+app.get('/add/:firstname/:lastname', (req, res) => {
     db.serialize(() => {
-        db.run('INSERT INTO emp(id, Firstname, Lastname) VALUES(?,?,?)',
-            [req.params.id, req.params.firstname, req.params.lastname], err => {
+        db.run('INSERT INTO users(Firstname, Lastname) VALUES(?,?)',
+            [req.params.firstname, req.params.lastname], err => {
                 if (err) return console.log(err.message)
                 console.log("New employee has been added")
                 res.send("New employee has been added into the database with ID = " + req.params.id + " and Firstname = " + req.params.firstname + " and Lastname = " + req.params.lastname)
@@ -28,7 +31,7 @@ app.get('/add/:id/:firstname/:lastname', (req, res) => {
 // READ
 app.get('/view/:id', (req, res) => {
     db.serialize(() => {
-        db.each('SELECT id, Firstname, Lastname FROM emp WHERE id=?', [req.params.id], (err, row) => {
+        db.each('SELECT id, Firstname, Lastname FROM users WHERE id=?', [req.params.id], (err, row) => {
             if (err) {
                 res.send("Error")
                 return console.error(err.message)
@@ -42,7 +45,7 @@ app.get('/view/:id', (req, res) => {
 // UPDATE
 app.get('/update/:id/:firstname/:lastname', (req, res) => {
     db.serialize(() => {
-        db.run('UPDATE emp SET firstname = ?, lastname = ? WHERE id = ?',
+        db.run('UPDATE users SET firstname = ?, lastname = ? WHERE id = ?',
             [req.params.firstname, req.params.lastname, req.params.id],
             err => {
                 if (err) {
@@ -58,7 +61,7 @@ app.get('/update/:id/:firstname/:lastname', (req, res) => {
 // DELETE
 app.get('/del/:id', (req, res) => {
     db.serialize(() => {
-        db.run('DELETE FROM emp WHERE id=?', req.params.id,
+        db.run('DELETE FROM users WHERE id=?', req.params.id,
             err => {
                 if (err) {
                     res.send("Error")

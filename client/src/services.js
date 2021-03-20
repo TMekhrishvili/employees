@@ -1,7 +1,20 @@
 import axios from 'axios'
 
-export const employeeSave = data => {
-    const url = `add/5/${data.firstname}/${data.lastname}`
+export const fetchUsers = () => {
+    const url = '/'
+    return new Promise((resolve, reject) => {
+        axios.get(url)
+            .then(response => {
+                resolve(response)
+            })
+            .catch(error => {
+                reject(error)
+            })
+    })
+}
+
+export const userSet = data => {
+    const url = `add/${data.firstname}/${data.lastname}`
     return new Promise((resolve, reject) => {
         axios.get(url)
             .then(response => {
