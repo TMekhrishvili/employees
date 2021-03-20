@@ -52,6 +52,21 @@ app.get('/update/:id/:firstname/:lastname', (req, res) => {
     })
 })
 
+// DELETE
+app.get('/del/:id', (req, res) => {
+    db.serialize(() => {
+        db.run('DELETE FROM emp WHERE id=?', req.params.id,
+            err => {
+                if (err) {
+                    res.send("Error")
+                    return console.error(err.message)
+                }
+                res.send("Entry Deleted")
+                console.log("Entry Deleted")
+            }
+        )
+    })
+})
 
 app.listen(3001, () => {
     console.log("server is running on port 3001")
