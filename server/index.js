@@ -7,7 +7,18 @@ const db = new sqlite3.Database('employee')
 db.run('CREATE TABLE IF NOT EXISTS emp(id INT, Firstname TEXT, Lastname TEXT)')
 
 app.get('/', (req, res) => {
-    res.send("<h3> Hi there, You are going to perform CRUD operations.............[CREATE] Please enter 'http://localhost:3000/add/(id number)/(name)' to add new employee to the database.........................[READ] 'http://localhost:3000/view/(id number)' to view an employee.........................[UPDATE] 'http://localhost:3000/update/(id number)/(new name)' to update an employee.....................[DELETE] 'http://localhost:3000/del/(id number)' to delete an employee...............................Before closing this window, kindly enter 'http://localhost:3000/close' to close the database connection <h3>")
+    res.send("<h3> Hi there, You are going to perform CRUD operations.............[CREATE] Please enter 'http://localhost:3000/add/(id number)/(firstname)/(lastname)' to add new employee to the database.........................[READ] 'http://localhost:3000/view/(id number)' to view an employee.........................[UPDATE] 'http://localhost:3000/update/(id number)/(new name)' to update an employee.....................[DELETE] 'http://localhost:3000/del/(id number)' to delete an employee...............................Before closing this window, kindly enter 'http://localhost:3000/close' to close the database connection <h3>")
+})
+
+app.get('/add/:id/:firstname/:lastname', (req, res) => {
+    db.serialize(() => {
+        db.run('INSERT INTO emp(id, Firstname, Lastname) VALUES(?,?,?)',
+            [req.params.id, req.params.firstname, req.params.lastname], err => {
+                if (err) return console.log(err.message)
+                console.log("New employee has been added")
+                res.send("New employee has been added into the database with ID = " + req.params.id + " and Firstname = " + req.params.firstname + " and Lastname = " + req.params.lastname)
+            })
+    })
 })
 
 app.listen(3001, () => {
