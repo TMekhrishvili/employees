@@ -36,6 +36,21 @@ app.get('/view/:id', (req, res) => {
     })
 })
 
+// UPDATE
+app.get('/update/:id/:firstname/:lastname', (req, res) => {
+    db.serialize(() => {
+        db.run('UPDATE emp SET firstname = ?, lastname = ? WHERE id = ?',
+            [req.params.firstname, req.params.lastname, req.params.id],
+            err => {
+                if (err) {
+                    res.send("Error")
+                    return console.error(err.message)
+                }
+                res.send("Update Successfully")
+                console.log("Update Successfully")
+            })
+    })
+})
 
 
 app.listen(3001, () => {
