@@ -18,27 +18,48 @@ export const userSet = data => {
     return new Promise((resolve, reject) => {
         axios.get(url)
             .then(response => {
-                console.log(response)
                 resolve(response)
             })
             .catch(error => {
-                console.error(error)
                 reject(error)
             })
     })
 }
 
+export const userGet = id => {
+    const url = `view/${id}`
+    return new Promise((resolve, reject) => {
+        axios.get(url)
+            .then(response => {
+                resolve(response)
+            })
+            .catch(error => {
+                reject(error)
+            })
+    })
+}
+
+export const userUpdate = data => {
+    const url = `update/${data.id}/${data.firstname}/${data.lastname}`
+    return new Promise((resolve, reject) => {
+        axios.get(url)
+            .then(response => {
+                resolve(response)
+            })
+            .catch(error => {
+                reject(error)
+            })
+    })
+}
 
 export const userDelete = id => {
     const url = `del/${id}`
     return new Promise((resolve, reject) => {
         axios.get(url)
             .then(response => {
-                console.log(response)
                 resolve(response)
             })
             .catch(error => {
-                console.error(error)
                 reject(error)
             })
     })
