@@ -3,9 +3,10 @@ const sqlite3 = require('sqlite3').verbose()
 const app = express()
 const cors = require('cors')
 const { getListSQL, createSQL, readSQL, updateSQL, deleteSQL } = require('./scripts')
+
 app.use(cors())
 app.use(express.json());
-// create application/json parser
+
 const PORT = 3001
 app.listen(PORT, () => {
     console.log("server is running on port 3001")
