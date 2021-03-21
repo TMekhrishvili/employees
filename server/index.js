@@ -2,6 +2,7 @@ const express = require('express')
 const sqlite3 = require('sqlite3').verbose()
 const app = express()
 const cors = require('cors')
+const { getListSQL, createSQL, readSQL, updateSQL, deleteSQL } = require('./scripts')
 app.use(cors())
 
 const db = new sqlite3.Database('database')
@@ -10,18 +11,18 @@ db.run('CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT, F
 
 
 //GET LIST
-app.get('/', (req, res) => {
-    const sql = 'SELECT * FROM users'
+const getListCallback = (req, res) => {
+
     const callback = (err, rows) => {
         res.send(rows)
     }
-    db.all(sql, callback)
-})
+    db.all(getListSQL, callback)
+}
+app.get('/', getListCallback)
 
 // CREATE
-app.get('/add/:firstname/:lastname', (req, res) => {
+const createCallback = (req, res) => {
 
-    const sql = 'INSERT INTO users(Firstname, Lastname) VALUES(?,?)'
     const params = [req.params.firstname, req.params.lastname]
 
     const callback = err => {
@@ -31,14 +32,15 @@ app.get('/add/:firstname/:lastname', (req, res) => {
     }
 
     db.serialize(() => {
-        db.run(sql, params, callback)
+        db.run(createSQL, params, callback)
     })
-})
+}
+app.get('/add/:firstname/:lastname', createCallback)
+
 
 // READ
-app.get('/view/:id', (req, res) => {
+const readCallback = (req, res) => {
 
-    const sql = 'SELECT id, Firstname, Lastname FROM users WHERE id=?'
     const param = req.params.id
 
     const callback = (err, row) => {
@@ -50,15 +52,15 @@ app.get('/view/:id', (req, res) => {
         console.log("Success")
     }
     const callbackRun = () => {
-        db.each(sql, param, callback)
+        db.each(readSQL, param, callback)
     }
     db.serialize(callbackRun)
-})
+}
+app.get('/view/:id', readCallback)
 
 // UPDATE
-app.get('/update/:id/:firstname/:lastname', (req, res) => {
+const updateCallback = (req, res) => {
 
-    const sql = 'UPDATE users SET firstname = ?, lastname = ? WHERE id = ?'
     const params = [req.params.firstname, req.params.lastname, req.params.id]
 
     const callback = err => {
@@ -70,15 +72,15 @@ app.get('/update/:id/:firstname/:lastname', (req, res) => {
         console.log("Update Successfully")
     }
     const callbackRun = () => {
-        db.run(sql, params, callback)
+        db.run(updateSQL, params, callback)
     }
     db.serialize(callbackRun)
-})
+}
+app.get('/update/:id/:firstname/:lastname', updateCallback)
 
 // DELETE
-app.get('/del/:id', (req, res) => {
+const deleteCallback = (req, res) => {
 
-    const sql = 'DELETE FROM users WHERE id=?'
     const param = req.params.id
 
     const callback = err => {
@@ -89,12 +91,15 @@ app.get('/del/:id', (req, res) => {
         res.send("Entry Deleted")
         console.log("Entry Deleted")
     }
+    
     const callbackRun = () => {
-        db.run(sql, param, callback)
+        db.run(deleteSQL, param, callback)
     }
 
     db.serialize(callbackRun)
-})
+}
+app.get('/del/:id', deleteCallback)
+
 
 app.listen(3001, () => {
     console.log("server is running on port 3001")

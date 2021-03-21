@@ -5,15 +5,15 @@ import { fetchUsers } from '../services/services'
 
 const columns = [
     {
-        title: 'ნომერი N',
+        title: 'User N',
         dataIndex: 'id',
     },
     {
-        title: 'სახელი',
+        title: 'Firstname',
         dataIndex: 'Firstname',
     },
     {
-        title: 'გვარი',
+        title: 'Lastname',
         dataIndex: 'Lastname',
     },
 ]
