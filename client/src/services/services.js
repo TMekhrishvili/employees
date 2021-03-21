@@ -14,9 +14,9 @@ export const fetchUsers = () => {
 }
 
 export const userSet = data => {
-    const url = `add/${data.firstname}/${data.lastname}`
+    const url = 'add'
     return new Promise((resolve, reject) => {
-        axios.get(url)
+        axios.post(url, data)
             .then(response => {
                 resolve(response)
             })
@@ -40,9 +40,9 @@ export const userGet = id => {
 }
 
 export const userUpdate = data => {
-    const url = `update/${data.id}/${data.firstname}/${data.lastname}`
+    const url = 'update'
     return new Promise((resolve, reject) => {
-        axios.get(url)
+        axios.put(url, data)
             .then(response => {
                 resolve(response)
             })
@@ -53,9 +53,9 @@ export const userUpdate = data => {
 }
 
 export const userDelete = id => {
-    const url = `del/${id}`
+    const url = `delete/${id}`
     return new Promise((resolve, reject) => {
-        axios.get(url)
+        axios.delete(url)
             .then(response => {
                 resolve(response)
             })

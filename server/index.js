@@ -4,11 +4,16 @@ const app = express()
 const cors = require('cors')
 const { getListSQL, createSQL, readSQL, updateSQL, deleteSQL } = require('./scripts')
 app.use(cors())
+app.use(express.json());
+// create application/json parser
+const PORT = 3001
+app.listen(PORT, () => {
+    console.log("server is running on port 3001")
+})
+
 
 const db = new sqlite3.Database('database')
-
 db.run('CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT, Firstname TEXT, Lastname TEXT)')
-
 
 //GET LIST
 const getListCallback = (req, res) => {
@@ -22,20 +27,19 @@ app.get('/', getListCallback)
 
 // CREATE
 const createCallback = (req, res) => {
-
-    const params = [req.params.firstname, req.params.lastname]
+    const params = [req.body.firstname, req.body.lastname]
 
     const callback = err => {
         if (err) return console.log(err.message)
         console.log("New user has been added")
-        res.send("New user has been added into the database with ID = " + req.params.id + " and Firstname = " + req.params.firstname + " and Lastname = " + req.params.lastname)
+        res.send("New user has been added into the database with " + "Firstname = " + req.body.firstname + " and Lastname = " + req.body.lastname)
     }
 
     db.serialize(() => {
         db.run(createSQL, params, callback)
     })
 }
-app.get('/add/:firstname/:lastname', createCallback)
+app.post('/add', createCallback)
 
 
 // READ
@@ -61,7 +65,7 @@ app.get('/view/:id', readCallback)
 // UPDATE
 const updateCallback = (req, res) => {
 
-    const params = [req.params.firstname, req.params.lastname, req.params.id]
+    const params = [req.body.firstname, req.body.lastname, req.body.id]
 
     const callback = err => {
         if (err) {
@@ -76,12 +80,12 @@ const updateCallback = (req, res) => {
     }
     db.serialize(callbackRun)
 }
-app.get('/update/:id/:firstname/:lastname', updateCallback)
+app.put('/update', updateCallback)
 
 // DELETE
 const deleteCallback = (req, res) => {
 
-    const param = req.params.id
+    const params = req.params.id
 
     const callback = err => {
         if (err) {
@@ -91,16 +95,12 @@ const deleteCallback = (req, res) => {
         res.send("Entry Deleted")
         console.log("Entry Deleted")
     }
-    
+
     const callbackRun = () => {
-        db.run(deleteSQL, param, callback)
+        db.run(deleteSQL, params, callback)
     }
 
     db.serialize(callbackRun)
 }
-app.get('/del/:id', deleteCallback)
+app.delete('/delete/:id', deleteCallback)
 
-
-app.listen(3001, () => {
-    console.log("server is running on port 3001")
-})
