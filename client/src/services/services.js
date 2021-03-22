@@ -15,6 +15,7 @@ export const fetchUsers = () => {
 
 export const userSet = data => {
     const url = 'add'
+    console.log(data)
     return new Promise((resolve, reject) => {
         axios.post(url, data)
             .then(response => {
