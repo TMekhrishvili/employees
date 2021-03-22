@@ -1,7 +1,7 @@
 const db = require('../data/data')
 const { createSQL } = require('../data/scripts')
 
-const createCallback = (req, res) => {
+const postRoute = (req, res) => {
     const params = [req.body.firstname, req.body.lastname]
 
     const callback = err => {
@@ -15,4 +15,4 @@ const createCallback = (req, res) => {
     })
 }
 
-module.exports = createCallback
+module.exports = postRoute

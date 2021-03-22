@@ -1,7 +1,7 @@
 const db = require('../data/data')
 const { updateSQL } = require('../data/scripts')
 
-const updateCallback = (req, res) => {
+const putRoute = (req, res) => {
 
     const params = [req.body.firstname, req.body.lastname, req.body.id]
 
@@ -19,4 +19,4 @@ const updateCallback = (req, res) => {
     db.serialize(callbackRun)
 }
 
-module.exports = updateCallback
+module.exports = putRoute

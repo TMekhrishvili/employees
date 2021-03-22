@@ -1,7 +1,7 @@
 const db = require('../data/data')
 const { deleteSQL } = require('../data/scripts')
 
-const deleteCallback = (req, res) => {
+const deleteRoute = (req, res) => {
 
     const params = req.params.id
 
@@ -21,4 +21,4 @@ const deleteCallback = (req, res) => {
     db.serialize(callbackRun)
 }
 
-module.exports = deleteCallback
+module.exports = deleteRoute

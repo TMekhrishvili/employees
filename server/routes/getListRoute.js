@@ -1,7 +1,7 @@
 const db = require('../data/data')
 const { getListSQL } = require('../data/scripts')
 
-const getListCallback = (req, res) => {
+const getListRoute = (req, res) => {
 
     const callback = (err, rows) => {
         res.send(rows)
@@ -9,4 +9,4 @@ const getListCallback = (req, res) => {
     db.all(getListSQL, callback)
 }
 
-module.exports = getListCallback
+module.exports = getListRoute

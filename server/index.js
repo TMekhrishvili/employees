@@ -3,11 +3,11 @@ const app = express()
 const cors = require('cors')
 
 // routes
-const createCallback = require('./routes/create-route')
-const getListCallback = require('./routes/get-list-route')
-const readCallback = require('./routes/read-route')
-const updateCallback = require('./routes/update-route')
-const deleteCallback = require('./routes/delete-route')
+const postRoute = require('./routes/postRoute')
+const getListRoute = require('./routes/getListRoute')
+const getRoute = require('./routes/getRoute')
+const putRoute = require('./routes/putRoute')
+const deleteRoute = require('./routes/deleteRoute')
 
 app.use(cors())
 app.use(express.json());
@@ -18,8 +18,8 @@ app.listen(PORT, () => {
 })
 
 // crud methods
-app.get('/', getListCallback)
-app.post('/add', createCallback)
-app.get('/view/:id', readCallback)
-app.put('/update', updateCallback)
-app.delete('/delete/:id', deleteCallback)
+app.get('/', getListRoute)
+app.post('/add', postRoute)
+app.get('/view/:id', getRoute)
+app.put('/update', putRoute)
+app.delete('/delete/:id', deleteRoute)

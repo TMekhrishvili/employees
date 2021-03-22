@@ -1,7 +1,7 @@
 const db = require('../data/data')
 const { readSQL } = require('../data/scripts')
 
-const readCallback = (req, res) => {
+const getRoute = (req, res) => {
 
     const param = req.params.id
 
@@ -19,4 +19,4 @@ const readCallback = (req, res) => {
     db.serialize(callbackRun)
 }
 
-module.exports = readCallback
+module.exports = getRoute
