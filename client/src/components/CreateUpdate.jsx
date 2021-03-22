@@ -1,12 +1,12 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, useRef } from 'react'
 import { Form, Input, Button } from 'antd'
 import { userSet, userGet, userUpdate } from '../services/services'
 import { GlobalContext } from '../context/GlobalStates'
 
 const CreateUpdate = () => {
-    const [user, setuser] = useState({ id: 0, firstname: null, lastname: null })
+    const [user, setuser] = useState({ firstname: null, lastname: null })
     const { userid, setresponse, setIsModalOpen } = useContext(GlobalContext)
-
+    const ref = useRef(null)
     const onFinish = (values) => {
         if (userid > 0) {
             const data = { ...values, id: userid }
@@ -47,8 +47,20 @@ const CreateUpdate = () => {
         }
     }, [userid])
 
+    useEffect(() => {
+
+        if (ref.current) {
+            if (userid === 0) {
+                ref.current.setFieldsValue({ firstname: "", lastname: "" })
+            } else {
+                ref.current.setFieldsValue(user)
+            }
+        }
+    }, [user, userid])
+
     return (
         <Form
+            ref={ref}
             name="basic"
             style={{ display: 'flex', flexDirection: 'column' }}
             initialValues={{
