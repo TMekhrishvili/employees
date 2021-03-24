@@ -4,7 +4,6 @@ import { GlobalContext } from '../context/GlobalStates'
 import { userDelete } from '../services/services'
 
 const Delete = () => {
-
     const { userid, setuserid, setIsModalOpen, setresponse } = useContext(GlobalContext)
 
     const handleClick = () => {
